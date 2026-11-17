@@ -27,3 +27,8 @@ data/
 .vscode/
 Thumbs.db
 .DS_Store
+
+# Local JavaScript tooling and deployment state
+node_modules/
+.railway/local-state.json
+*.tar.gz

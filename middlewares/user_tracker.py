@@ -2,6 +2,7 @@ from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject, Message, CallbackQuery
 from database.models import Database
+from utils.text_helpers import clean_phone_number
 
 class UserTrackerMiddleware(BaseMiddleware):
     """
@@ -22,10 +23,14 @@ class UserTrackerMiddleware(BaseMiddleware):
 
         if user and not user.is_bot:
             full_name = f"{user.first_name or ''} {user.last_name or ''}".strip()
+            phone = None
+            if isinstance(event, Message) and event.contact and event.contact.user_id == user.id:
+                phone = clean_phone_number(event.contact.phone_number)
             await Database.add_or_update_user(
                 user_id=user.id,
                 username=user.username,
-                full_name=full_name
+                full_name=full_name,
+                phone=phone
             )
 
         return await handler(event, data)

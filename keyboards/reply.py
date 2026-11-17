@@ -1,4 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import WebAppInfo
+from config import APP_URL
 
 def get_main_keyboard(is_admin: bool = False, is_sales: bool = False) -> ReplyKeyboardMarkup:
     """Asosiy foydalanuvchi menyusi (10 dan ortiq funksiyalar bilan)"""
@@ -29,6 +31,9 @@ def get_main_keyboard(is_admin: bool = False, is_sales: bool = False) -> ReplyKe
         ]
     ]
 
+    if APP_URL.startswith("https://"):
+        keyboard.insert(0, [KeyboardButton(text="📱 Mini app", web_app=WebAppInfo(url=APP_URL))])
+
     extra_buttons = []
     if is_admin:
         extra_buttons.append(KeyboardButton(text="👑 Admin Panel"))
@@ -41,7 +46,7 @@ def get_main_keyboard(is_admin: bool = False, is_sales: bool = False) -> ReplyKe
     return ReplyKeyboardMarkup(
         keyboard=keyboard,
         resize_keyboard=True,
-        persistent=True
+        is_persistent=True
     )
 
 def get_phone_keyboard() -> ReplyKeyboardMarkup:

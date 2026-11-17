@@ -1,0 +1,61 @@
+name: Validate Mini App
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+      - ".railway/README.md"
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+      - ".railway/README.md"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: "24"
+      - name: Install and test Python application
+        run: |
+          python -m pip install -r requirements.lock -r requirements-dev.txt
+          python -m pytest --disable-warnings
+          python -m pip check
+      - name: Check frontend syntax
+        run: |
+          node --check miniapp/app/app.js
+          node --check miniapp/app/api.js
+          node --check miniapp/app/icons.js
+      - name: Typecheck Railway infrastructure
+        working-directory: .railway
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run check
+      - name: Build production Docker image
+        run: docker build -t itlive-miniapp:test .
+      - name: Start Docker API and verify health
+        run: |
+          docker run -d --name itlive-smoke -e RUN_BOT=false -p 127.0.0.1:18080:8000 itlive-miniapp:test
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:18080/healthz; then
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs itlive-smoke
+          exit 1
+      - name: Stop test container
+        if: always()
+        run: docker rm -f itlive-smoke || true

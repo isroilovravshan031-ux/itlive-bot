@@ -238,6 +238,9 @@ class Database:
 
     @staticmethod
     async def update_course(course_id: int, **kwargs) -> bool:
+        allowed = {"name", "description", "duration", "price", "technologies", "is_active", "sort_order"}
+        if set(kwargs) - allowed:
+            raise ValueError("Unknown course field")
         if not kwargs:
             return False
         async with get_db() as db:

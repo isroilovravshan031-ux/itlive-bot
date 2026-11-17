@@ -18,6 +18,9 @@ async def handle_lead_status_change(call: CallbackQuery):
     parts = call.data.split(":")
     lead_id = int(parts[1])
     new_status = parts[2]
+    if new_status not in {"YANGI", "BOGLANILDI", "YOZILDI", "BEKOR_QILINDI"}:
+        await call.answer("Noto‘g‘ri holat.", show_alert=True)
+        return
     sales_user = call.from_user
 
     # Foydalanuvchi sotuvchi yoki admin ekanligini tekshirish
@@ -84,6 +87,13 @@ async def handle_lead_add_note_prompt(call: CallbackQuery, state: FSMContext):
 
 @router.message(SalesNoteStates.waiting_for_note)
 async def process_lead_note(message: Message, state: FSMContext):
+    if message.from_user.id not in ADMINS and not await Database.is_sales_rep(message.from_user.id):
+        await state.clear()
+        await message.answer("⛔️ Ruxsat berilmagan!")
+        return
+    if not message.text:
+        await message.answer("Iltimos, izohni matn ko‘rinishida yuboring.")
+        return
     note_text = message.text.strip()
     data = await state.get_data()
     lead_id = data.get("note_lead_id")

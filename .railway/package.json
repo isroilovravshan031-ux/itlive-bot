@@ -1,0 +1,12 @@
+{
+  "name": "itlive-railway-infrastructure",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "railway": "3.17.0",
+    "typescript": "7.0.2"
+  }
+}

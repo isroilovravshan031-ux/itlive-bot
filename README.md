@@ -1,167 +1,103 @@
-# 🚀 ITLive O'quv Markazi — Professional Telegram Boti
+# ITLive Academy — Telegram Bot + Mini App
 
-Ushbu bot **ITLive o'quv markazi** uchun maxsus ishlab chiqilgan bo'lib, o'quv markaziga murojaat qilgan yangi mijozlar (lidlar) ma'lumotlarini qabul qilib, ularni darhol **sotuvchilar (sales team)** profillariga yetkazib beradi hamda markaz faoliyatini to'liq avtomatlashtiradi.
+ITLive o‘quv markazining aiogram boti va Telegram Mini App. Tanlangan **Studio / Neumorphism** dizayni: avvalgi binafsha ranglar, Fraunces / DM Sans shriftlari, yumshoq bo‘rtma kartalar va botiq boshqaruvlar.
 
----
+Bot, API va frontend bitta Python servisida ishlaydi; hammasi bir SQLite bazasidan foydalanadi. Railway uchun Docker image, dependency lock va doimiy volume yo‘riqnomasi tayyor.
 
-## 🛠 Texnologiyalar va Kutubxonalar
-- **Python 3.10+**
-- **Aiogram 3.13+** (Zamonaviy asinxron Telegram Bot freymvorki, Router va FSM arxitekturasi)
-- **SQLite & aiosqlite** (To'liq asinxron, ishonchli va yengil ma'lumotlar bazasi)
-- **OpenPyXL** (Murojaatlarni zamonaviy rangli Excel (.xlsx) formatida eksport qilish)
-- **Python-dotenv** (Konfiguratsiya va xavfsizlikni boshqarish)
+## Railway’ga joylash
 
----
+**[To‘liq Railway yo‘riqnomasi](docs/railway-deploy.md)** — GitHub repo, `/data` volume, Variables, domen va Telegram menyusini ulash.
 
-## ✨ Imkoniyatlar va Funksiyalar (12+ Funksiya)
+Tez sozlamalar:
 
-### 👤 1. Foydalanuvchilar uchun imkoniyatlar:
-1. 📝 **Kursga yozilish (Lid yig'ish tizimi):**
-   - Ism va familiya (tekshiruv bilan)
-   - Telefon raqam (bitta tugma orqali yuborish yoki xalqaro formatda kiritish)
-   - Yoshi (7 dan 90 gacha tekshiruv bilan)
-   - Qayerdanligi / Hudud (Toshkent, viloyatlar yoki geo-lokatsiya yuborish)
-   - Qiziqqan IT yo'nalishi (mavjud kurslar ro'yxatidan tanlash)
-   - Qulay o'qish vaqti (Ertalab, Tushdan keyin, Kechki yoki Farqi yo'q)
-2. 📚 **Kurslarimiz:**
-   - Barcha faol kurslar ro'yxati (Python, Frontend, Flutter, Dizayn, Kiberxavfsizlik, Foundation, SMM)
-   - Har bir kurs haqida batafsil ma'lumot (davomiyligi, oylik to'lovi, dastur texnologiyalari va bevosita yozilish tugmasi)
-3. 🎁 **Bepul sinov darsiga yozilish:**
-   - Markazga tashrif buyurib 1-ochiq darsda bepul qatnashish uchun tezkor ariza
-4. 💡 **IT Kasb tanlash testi (Interactive Career Quiz):**
-   - 5 ta qisqa va qiziqarli savol orqali foydalanuvchining mantiqiy, vizual va texnik qobiliyatini tahlil qilib, unga eng mos IT yo'nalishini aniqlab beruvchi intellektual test
-5. 📍 **Bizning lokatsiya:**
-   - Telegram orqali jonli geo-manzil nuqtasi
-   - Aniq manzil, mo'ljal va ish vaqtlari
-   - Google Maps va Yandex Xarita havolalari
-6. 📞 **Bog'lanish va Raqamlar:**
-   - Call-markaz telefonlari, Telegram admin, rasmiy veb-sayt, Instagram va YouTube havolalari
-7. ℹ️ **Biz haqimizda (ITLive haqida):**
-   - O'quv markazining afzalliklari, noutbuklar, coworking, karyera markazi va xalqaro sertifikat haqida ma'lumot
-8. 👨‍🏫 **Mentorlarimiz:**
-   - Senior va Lead darajadagi tajribali dasturchi ustozlar va ularning real loyihalari
-9. 🏷 **Chegirmalar va Aksiyalar:**
-   - Do'stingni olib kel aksiyasi, 100% to'lov keshbeki va boshqa maxsus chegirmalar
-10. ❓ **FAQ (Savol-javoblar):**
-    - Boshlang'ich bilim kerakmi, noutbuk beriladimi, ishga joylashish qanday bo'ladi kabi barcha dolzarb savollarga javoblar
-11. ✍️ **Fikr va takliflar:**
-    - Foydalanuvchilar o'z fikr va takliflarini qoldirishi mumkin, xabar darhol barcha adminlarga yetib boradi
-12. 📂 **Mening arizalarim:**
-    - Foydalanuvchi o'zi qoldirgan barcha arizalar holatini (Yangi, Bog'lanildi, O'qishga yozildi) real-vaqt rejimida kuzatib boradi
+| Sozlama | Qiymat |
+|---|---|
+| Source | Shu repo, `main`, repo ildizi |
+| Build | `Dockerfile` avtomatik aniqlanadi |
+| Start | `python run.py` |
+| Healthcheck | `/healthz` |
+| Replicas | `1` |
+| Volume | `/data` |
+| Zarur Variables | `BOT_TOKEN`, `ADMINS`, `APP_URL` |
+| Baza | `/data/itlive_bot.db` |
 
----
+`.railway/railway.ts` — CLI orqali IaC sozlamasi uchun qo‘shimcha yo‘l. GUI orqali joylashda Node build kerak emas. Amaldagi Railway hujjatiga mos ravishda eskirgan `railway.json`ga tayanilmaydi.
 
-### 💼 2. Sotuvchilar (Sales Team) uchun tizim:
-- Markazga yangi ariza tushgan zahoti barcha biriktirilgan sotuvchilar profiliga **ovozli bildirishnoma bilan maxsus karta** yuboriladi:
-  - Mijoz ismi, tozalangan telefon raqami, yoshi, hududi, kursi, vaqti va Telegram profili.
-- Sotuvchi bevosita Telegram ichidan turib bitta tugma orqali holatni o'zgartiradi:
-  - `[📞 Bog'lanildi]`
-  - `[✅ O'qishga yozildi]`
-  - `[❌ Bekor qilindi]`
-  - `[💬 Izoh yozish]` (mijoz bilan bo'lgan suhbat tafsilotini bazaga yozib qo'yish)
-- `/sales` yoki "💼 Sotuvchi Kabineti" orqali kunlik arizalar va statistikasini ko'rish.
+## Imkoniyatlar
 
----
+| Foydalanuvchi | Sotuvchi | Admin |
+|---|---|---|
+| Kurslar, tafsilotlar va narxlar | Umumiy statistika | Barcha statistika va foydalanuvchilar soni |
+| Kursga / bepul darsga ariza | Lid qidirish, filtr, sahifalash | Lidlar va Excel `.xlsx` eksport |
+| Telefon va lokatsiya ulashish | Mijozga telefon / Telegram orqali chiqish | Kurs yaratish, tahrirlash, yashirish, o‘chirish |
+| Shaxsiy arizalar va holatlar | Holat va sotuvchi izohini saqlash | Sotuvchi qo‘shish va kirishini bekor qilish |
+| 5 savolli kasb testi | O‘quvchi ko‘rinishi | Matn, rasm, video bilan ommaviy xabarnoma |
+| Mentorlar, FAQ, markaz va aksiyalar | Profil | Xabarnoma navbati, natijasi, to‘xtatish |
+| Kontaktlar, Google / Yandex xarita | | Markaz sozlamalari va fikrlar ro‘yxati |
+| Fikr va taklif yuborish | | Excelni yuklab olish yoki o‘z Telegramiga yuborish |
 
-### 👑 3. Moslashuvchan va Dinamik Admin Panel:
-Admin paneli botni kodiga kirmasdan Telegram orqali boshqarish imkonini beradi:
-- 📊 **To'liq Statistika:**
-  - Jami foydalanuvchilar, bugungi va umumiy lidlar, statuslar bo'yicha tahlil, eng ommabop TOP kurslar
-- 📥 **Lidlar boshqaruvi va 📑 Excel eksport:**
-  - Barcha murojaatlarni chiroyli formatlangan, rangli statuslar bilan jihozlangan `.xlsx` (Excel) fayl ko'rinishida bitta tugma bilan yuklab olish
-- 📚 **Kurslarni dinamik boshqarish (CRUD):**
-  - Yangi kurs qo'shish (nomi, narxi, muddati, tavsifi, texnologiyalari)
-  - Kurslarni yoqish / vaqtincha o'chirish / butunlay o'chirish
-- 👥 **Sotuvchilarni boshqarish:**
-  - Yangi sotuvchi qo'shish (Telegram ID, ism, raqam)
-  - Sotuvchini o'chirish (o'chirilgan xodimga lidlar bormaydi)
-- 📢 **Ommaviy Xabarnoma (Broadcast):**
-  - Barcha bot a'zolariga rasm, video yoki matnli xabarlarni xavfsiz (anti-flood) yuborish
-- ⚙️ **Bot sozlamalarini dinamik o'zgartirish:**
-  - Telefon raqamlar, manzil, mo'ljal, ish vaqti, Instagram, veb-sayt, "Biz haqimizda" va chegirmalar matnlarini Telegramning o'zidan o'zgartirish
+Admin `ADMINS` orqali, sotuvchi faol `sales_team` yozuvi orqali aniqlanadi. Oddiy foydalanuvchi faqat o‘z arizalarini ko‘radi; ichki sotuvchi izohlari unga uzatilmaydi. Har bir API so‘rovida ruxsat serverda qayta tekshiriladi.
 
----
+Yangi arizalar, fikrlar va holat o‘zgarishlari bot orqali bildiriladi. Ariza va ommaviy xabarnoma takroriy yuborishdan himoyalangan. Ommaviy xabarnoma yuborishdan oldin matn, media va qabul qiluvchilar soni ko‘rsatiladi.
 
-## 📁 Loyiha Tuzilishi
+## Lokal ishga tushirish
 
-```
-d:\itlivebot admin\
-├── bot.py                  # Asosiy ishga tushirish fayli
-├── config.py               # Muhit o'zgaruvchilari va default sozlamalar
-├── .env                    # Bot token va Admin ID lari saqlanadigan fayl
-├── requirements.txt        # Kerakli Python kutubxonalari
-├── database/
-│   ├── __init__.py
-│   ├── db.py               # Asinxron SQLite connection va jadvallar
-│   └── models.py           # SQLite CRUD operatsiyalari
-├── handlers/
-│   ├── __init__.py
-│   ├── user_handlers.py    # Asosiy 12+ funksiyalar
-│   ├── registration.py     # Lid qabul qilish va sotuvchilarga yuborish
-│   ├── sales_handlers.py   # Sotuvchilar harakatlari va izohlar
-│   ├── quiz.py             # IT Kasb tanlash testi
-│   ├── feedback.py         # Fikr va takliflar
-│   ├── admin_handlers.py   # Admin panel, statistika, Excel, xabarnoma
-│   ├── admin_courses.py    # Kurslarni boshqarish
-│   └── admin_sales.py      # Sotuvchilarni boshqarish
-├── keyboards/
-│   ├── reply.py            # Asosiy menyu, raqam va lokatsiya tugmalari
-│   └── inline.py           # Inline tugmalar (kurslar, admin, quiz, lidlar)
-├── middlewares/
-│   └── user_tracker.py     # Foydalanuvchilarni avtomatik ro'yxatga oluvchi middleware
-├── states/
-│   └── user_states.py      # FSM holatlari
-├── utils/
-│   ├── excel_export.py     # Lidlar ro'yxatini Excelga eksport qilish
-│   └── text_helpers.py     # Shablolar va yordamchi matnlar
-└── data/                   # SQLite bazasi va Excel hisobotlar saqlanadigan joy
-```
-
----
-
-## 🚀 Ishga Tushirish Qo'llanmasi
-
-1. **Kutubxonalarni o'rnatish:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **`.env` faylini to'ldirish:**
-   `.env.example` faylidan `.env` nusxasini yarating va bot tokeningiz hamda o'zingizning Telegram ID raqamingizni kiriting. `.env`, lokal ma'lumotlar bazasi va eksportlar GitHub'ga yuklanmaydi:
-   ```env
-   BOT_TOKEN=1234567890:ABCdefGhIJKlmNoPQRstuVWXyz
-   ADMINS=123456789
-   DATABASE_PATH=data/itlive_bot.db
-   ```
-
-3. **Botni ishga tushirish:**
-   ```bash
-   python bot.py
-   ```
-
-## Telegram Mini App — dizayn tanlovi
-
-Mini appni qurishning birinchi bosqichi uchun oltita interaktiv dizayn maketi tayyorlandi:
-
-- **Pulse** — yorug‘ ko‘k va sodda.
-- **Midnight** — to‘q texnologik.
-- **Campus** — sariq grafik.
-- **Studio** — nafis binafsha.
-- **Atlas** — yashil va tartibli.
-- **Orbit** — iliq korall.
-
-[Dizaynlarni ko‘rish](https://itlive-miniapp-designs.charmingpapaya5.chatgpt.site) — shaxsiy ko‘rgazma, ChatGPT orqali kirish talab qilinadi.
-
-Har bir variantda foydalanuvchi, sotuvchi va admin ko‘rinishlari bor. Bular sun’iy ma’lumotli prototiplar; haqiqiy botga yoki mijozlar bazasiga ulanmagan.
-
-Lokal ochish:
+Python 3.12 tavsiya etiladi:
 
 ```powershell
-node miniapp/design-preview/server.mjs
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements.lock
+Copy-Item .env.example .env
 ```
 
-So‘ng brauzerda `http://127.0.0.1:4173` manzilini oching.
+Agar `.env` mavjud bo‘lsa nusxalash qadamini o‘tkazib yuboring. Uning ichida haqiqiy `BOT_TOKEN`, `ADMINS` va Telegram uchun ochiq HTTPS `APP_URL`ni belgilang, keyin:
 
-Manba kod: [miniapp/design-preview](miniapp/design-preview/README.md). [Ish rejasi va funksiyalar](docs/miniapp-plan.md), [tekshiruvlar](docs/miniapp-validation.md).
+```powershell
+.\.venv\Scripts\python run.py
+```
 
-![Oltita Mini App dizayni](docs/miniapp-designs.jpg)
+`run.py` bot polling, API, frontend va xabar navbatlarini birgalikda boshqaradi. `bot.py` avvalgi mustaqil bot rejimi uchun ham qolgan; bir token bilan ikkalasini bir vaqtda ishga tushirmang.
+
+## Botga ulanmasdan dizaynni lokal sinash
+
+```powershell
+.\.venv\Scripts\python scripts/preview_local.py
+```
+
+Terminal admin, sotuvchi va foydalanuvchi uchun lokal URL chiqaradi. Ular alohida vaqtinchalik namuna bazasida ishlaydi, haqiqiy `.env` yoki botga ulanmaydi va hech kimga Telegram xabari yubormaydi. Bu skript production Docker image’iga kiritilmaydi. Production API’da demo login endpoint yo‘q.
+
+## Testlar
+
+```powershell
+.\.venv\Scripts\python -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python -m pytest
+```
+
+37 ta test autentifikatsiya, rollar, begona arizalar maxfiyligi, validatsiya, idempotency, parallel tahrir konflikti, kurslar, sozlamalar, feedback, kasb testi, Excel, media, xabarnoma navbatlari va bot startup/shutdown’ini tekshiradi. Testlar haqiqiy mijozlar bazasidan foydalanmaydi.
+
+**[Tekshiruv hisoboti](docs/studio-neumorphism-validation.md)** va **[dizayn qarorlari](docs/studio-neumorphism-design.md)**.
+
+## Tuzilishi
+
+```text
+run.py                # Railway / lokal: API + bot + background workerlar
+bot.py                # aiogram dispatcher va mustaqil bot rejimi
+config.py             # Muhit sozlamalari
+webapp/               # FastAPI, Telegram auth, validatsiya, tranzaksiyalar, navbatlar
+miniapp/app/          # Studio neumorphism frontend, lokal shriftlar va SVG ikonlar
+database/             # Bot bilan umumiy SQLite repository
+handlers/             # Telegram botning mavjud funksiyalari
+scripts/              # Lokal namuna va izchil SQLite backup
+tests/                # Izolyatsiyalangan API va worker testlari
+.railway/             # Ixtiyoriy, tekshirilgan TypeScript IaC
+Dockerfile            # Python 3.12 image
+requirements.lock     # Sinovdan o‘tgan runtime versiyalari
+```
+
+`.env`, baza, yuklangan media va eksportlar GitHub’ga kirmaydi. Telegram bot tokeni frontendga uzatilmaydi. Sessiya tokenlari brauzerning doimiy saqlash joyiga yozilmaydi, serverda faqat hash saqlanadi.
+
+Oldingi olti dizayn ko‘rgazmasi `miniapp/design-preview` ichida arxiv sifatida saqlangan; ishlaydigan yangi ilova `miniapp/app` va `webapp` ichida.
+
+![Studio neumorphism — foydalanuvchi](docs/studio-neumorphism-mobile.jpg)
+
+![Studio neumorphism — admin](docs/studio-neumorphism-admin-desktop.jpg)

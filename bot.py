@@ -41,6 +41,31 @@ async def setup_bot_commands(bot: Bot):
     ]
     await bot.set_my_commands(commands, scope=BotCommandScopeDefault())
 
+def create_dispatcher() -> Dispatcher:
+    dp = Dispatcher(storage=MemoryStorage())
+
+    # Middlewarelarni ro'yxatdan o'tkazish
+    dp.message.outer_middleware(UserTrackerMiddleware())
+    dp.callback_query.outer_middleware(UserTrackerMiddleware())
+
+    # Routerlarni tartib bilan ulash
+    # 1. Admin routerlar
+    dp.include_router(admin_router)
+    dp.include_router(admin_courses_router)
+    dp.include_router(admin_sales_router)
+    # 2. Sotuvchilar routeri
+    dp.include_router(sales_router)
+    # 3. Ro'yxatdan o'tish (Lead yig'ish) routeri
+    dp.include_router(registration_router)
+    # 4. Kviz va Fikr-mulohaza routerlari
+    dp.include_router(quiz_router)
+    dp.include_router(feedback_router)
+    # 5. Asosiy foydalanuvchi routeri
+    dp.include_router(user_router)
+
+    return dp
+
+
 async def main():
     logger.info("ITLive Telegram Boti ishga tushirilmoqda...")
 
@@ -63,26 +88,7 @@ async def main():
         token=BOT_TOKEN,
         default=DefaultBotProperties(parse_mode=ParseMode.HTML)
     )
-    dp = Dispatcher(storage=MemoryStorage())
-
-    # Middlewarelarni ro'yxatdan o'tkazish
-    dp.message.middleware(UserTrackerMiddleware())
-    dp.callback_query.middleware(UserTrackerMiddleware())
-
-    # Routerlarni tartib bilan ulash
-    # 1. Admin routerlar
-    dp.include_router(admin_router)
-    dp.include_router(admin_courses_router)
-    dp.include_router(admin_sales_router)
-    # 2. Sotuvchilar routeri
-    dp.include_router(sales_router)
-    # 3. Ro'yxatdan o'tish (Lead yig'ish) routeri
-    dp.include_router(registration_router)
-    # 4. Kviz va Fikr-mulohaza routerlari
-    dp.include_router(quiz_router)
-    dp.include_router(feedback_router)
-    # 5. Asosiy foydalanuvchi routeri
-    dp.include_router(user_router)
+    dp = create_dispatcher()
 
     # Bot buyruqlarini o'rnatish
     try:

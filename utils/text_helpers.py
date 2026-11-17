@@ -1,4 +1,5 @@
 import re
+from html import escape
 from typing import Optional, Dict
 
 def clean_phone_number(raw_phone: str) -> Optional[str]:
@@ -21,7 +22,8 @@ def clean_phone_number(raw_phone: str) -> Optional[str]:
 
 def format_lead_notification(lead: dict, lead_id: int, username: Optional[str] = None) -> str:
     """Sotuvchilar uchun yuboriladigan yangi lid xabari"""
-    user_tag = f"@{username}" if username else "Mavjud emas"
+    lead = {key: escape(str(value)) if value is not None else "" for key, value in lead.items()}
+    user_tag = f"@{escape(username)}" if username else "Mavjud emas"
     course = lead.get("course_name") or "Umumiy konsultatsiya"
     time_pref = lead.get("time_preference") or "Ko'rsatilmagan"
     phone = lead.get("phone", "")
@@ -47,6 +49,7 @@ def format_lead_notification(lead: dict, lead_id: int, username: Optional[str] =
 
 def format_lead_summary_card(lead: dict) -> str:
     """Admin yoki sotuvchi uchun bitta lid haqida batafsil karta"""
+    lead = {key: escape(str(value)) if value is not None else "" for key, value in lead.items()}
     status_icons = {
         "YANGI": "🆕 Yangi",
         "BOGLANILDI": "📞 Bog'lanildi",

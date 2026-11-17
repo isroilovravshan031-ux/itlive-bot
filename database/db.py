@@ -8,13 +8,15 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def get_db():
     """SQLite asinxron ulanishini xavfsiz boshqaruvchi context manager"""
-    async with aiosqlite.connect(DATABASE_PATH) as db:
+    async with aiosqlite.connect(DATABASE_PATH, timeout=30) as db:
         db.row_factory = aiosqlite.Row
+        await db.execute("PRAGMA busy_timeout = 30000;")
         yield db
 
 async def init_db():
     """Barcha jadvallarni yaratish va boshlang'ich ma'lumotlarni kiritish"""
     async with get_db() as db:
+        await db.execute("PRAGMA journal_mode = WAL;")
         await db.execute("PRAGMA foreign_keys = ON;")
 
         # 1. Foydalanuvchilar jadvali

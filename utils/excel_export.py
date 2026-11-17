@@ -92,6 +92,8 @@ async def export_leads_to_excel(leads: List[dict], output_dir: str = "data/expor
 
         for col_idx, val in enumerate(row_data, 1):
             cell = ws.cell(row=row_idx, column=col_idx, value=val)
+            if isinstance(val, str):
+                cell.data_type = "s"
             cell.border = thin_border
             cell.font = Font(name="Calibri", size=10)
 

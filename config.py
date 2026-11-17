@@ -13,6 +13,14 @@ _admins_str = os.getenv("ADMINS", "")
 ADMINS = [int(admin_id.strip()) for admin_id in _admins_str.split(",") if admin_id.strip().isdigit()]
 
 DATABASE_PATH = os.getenv("DATABASE_PATH", str(BASE_DIR / "data" / "itlive_bot.db"))
+APP_URL = os.getenv("APP_URL", "").strip().rstrip("/")
+if not APP_URL and os.getenv("RAILWAY_PUBLIC_DOMAIN"):
+    APP_URL = "https://" + os.environ["RAILWAY_PUBLIC_DOMAIN"].strip()
+BOT_USERNAME = os.getenv("BOT_USERNAME", "").strip().lstrip("@")
+RUN_BOT = os.getenv("RUN_BOT", "true").lower() in {"1", "true", "yes"}
+UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", str(Path(DATABASE_PATH).parent / "uploads")))
+INIT_DATA_MAX_AGE = int(os.getenv("INIT_DATA_MAX_AGE", "3600"))
+SESSION_MAX_AGE = 12 * 60 * 60
 
 # Ma'lumotlar bazasi papkasini yaratish
 os.makedirs(Path(DATABASE_PATH).parent, exist_ok=True)
