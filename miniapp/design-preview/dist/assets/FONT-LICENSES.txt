@@ -1,0 +1,10 @@
+Fonts are bundled from the Google Fonts project and served locally.
+Each font's SIL Open Font License 1.1 and copyright notice are in assets/licenses/.
+
+Manrope: https://github.com/google/fonts/tree/main/ofl/manrope
+Sora: https://github.com/google/fonts/tree/main/ofl/sora
+Outfit: https://github.com/google/fonts/tree/main/ofl/outfit
+DM Sans: https://github.com/google/fonts/tree/main/ofl/dmsans
+Fraunces: https://github.com/google/fonts/tree/main/ofl/fraunces
+Plus Jakarta Sans: https://github.com/google/fonts/tree/main/ofl/plusjakartasans
+IBM Plex Mono: https://github.com/google/fonts/tree/main/ofl/ibmplexmono

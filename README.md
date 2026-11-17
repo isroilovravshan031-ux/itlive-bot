@@ -138,3 +138,30 @@ d:\itlivebot admin\
    ```bash
    python bot.py
    ```
+
+## Telegram Mini App — dizayn tanlovi
+
+Mini appni qurishning birinchi bosqichi uchun oltita interaktiv dizayn maketi tayyorlandi:
+
+- **Pulse** — yorug‘ ko‘k va sodda.
+- **Midnight** — to‘q texnologik.
+- **Campus** — sariq grafik.
+- **Studio** — nafis binafsha.
+- **Atlas** — yashil va tartibli.
+- **Orbit** — iliq korall.
+
+[Dizaynlarni ko‘rish](https://itlive-miniapp-designs.charmingpapaya5.chatgpt.site) — shaxsiy ko‘rgazma, ChatGPT orqali kirish talab qilinadi.
+
+Har bir variantda foydalanuvchi, sotuvchi va admin ko‘rinishlari bor. Bular sun’iy ma’lumotli prototiplar; haqiqiy botga yoki mijozlar bazasiga ulanmagan.
+
+Lokal ochish:
+
+```powershell
+node miniapp/design-preview/server.mjs
+```
+
+So‘ng brauzerda `http://127.0.0.1:4173` manzilini oching.
+
+Manba kod: [miniapp/design-preview](miniapp/design-preview/README.md). [Ish rejasi va funksiyalar](docs/miniapp-plan.md), [tekshiruvlar](docs/miniapp-validation.md).
+
+![Oltita Mini App dizayni](docs/miniapp-designs.jpg)
