@@ -1,5 +1,7 @@
 # ITLive Telegram Mini App
 
+> Bu dastlabki dizayn tanlovining rejasi. Foydalanuvchi 4-variantni tanlaganidan keyin ishlaydigan Studio Neumorphism ilovasi `miniapp/app` va `webapp` ichida qurildi. Amaldagi qo‘llanma: [Railway deploy](railway-deploy.md), [tekshiruv hisoboti](studio-neumorphism-validation.md).
+
 ## Ish tartibi
 
 1. Oltita vizual yo‘nalishni interaktiv maketda solishtirish.

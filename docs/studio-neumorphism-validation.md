@@ -9,6 +9,7 @@
 - `python -m compileall`: API, bot, repository va helperlar sintaksisi to‘g‘ri.
 - `pip check`: dependency konflikti topilmadi.
 - `.railway` ichida `npm run check`: Railway **3.17.0** SDK bilan IaC TypeScript tekshiruvi o‘tdi.
+- [GitHub Actions — Linux tekshiruvi](https://github.com/isroilovravshan031-ux/itlive-bot/actions/runs/44078976731): 37 ta test, frontend sintaksisi va IaC tekshiruvi o‘tdi. Production Docker image muvaffaqiyatli yig‘ildi; shu image ichida servis ishga tushirilib, `/healthz` HTTP 200 qaytargani tasdiqlandi. Tekshirilgan kod commit’i: `6430f44341ca645d1df90f9c6cbbaf7a4e51e737`.
 
 Testlar Telegram HMAC imzosi, eskirgan/future auth sanasi, duplicate maydonlar, soxta admin roli, sessiyani bekor qilish, sotuvchi ruxsatining darhol bekor bo‘lishi, begona arizaga kira olmaslik, ichki izohlar maxfiyligi, input chegaralari, takroriy ariza, eskirgan tahrirga 409, kurslarni yashirish/CRUD, qidirish va sahifalash, sozlamalardagi kalit/havola allowlisti, kasb testi, Excel formula injection, fayl turi, xabarnoma tasdig‘i/idempotency/navbati/cancel va retry holatlarini qamraydi.
 
@@ -28,4 +29,4 @@ Excelni faqat tasdiqlangan adminning o‘z Telegramiga yuborish va Telegram cont
 
 ## Tekshirish chegaralari
 
-Bu kompyuterda Docker CLI mavjud emas: image mahalliy build qilinmadi. Railway akkauntiga production deploy qilinmadi; domen, Variables va volume’ni akkaunt egasi sozlashi uchun `railway-deploy.md` tayyorlandi. Haqiqiy Telegram orqali xabar yuborish va native Android/iOS ichidagi qurilma sinovi bajarilmadi. Server protokoli, ruxsatlar va Telegram yuborish kodi izolyatsiyalangan testlar bilan tekshirildi.
+Bu kompyuterda Docker CLI mavjud emas; Docker build va container ishga tushirish GitHub Actions’ning Linux muhitida bajarildi. Railway akkauntiga production deploy qilinmadi; domen, Variables va volume’ni akkaunt egasi sozlashi uchun `railway-deploy.md` tayyorlandi. Haqiqiy Telegram orqali xabar yuborish va native Android/iOS ichidagi qurilma sinovi bajarilmadi. Server protokoli, ruxsatlar va Telegram yuborish kodi izolyatsiyalangan testlar bilan tekshirildi.
